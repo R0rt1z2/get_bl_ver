@@ -1,13 +1,11 @@
 import sys
 
 global compare
-
 VER_STRING = b'LK_VER:'
-
 
 def main():
   if compare:
-    print("W: Comparing two bootloaders...")
+    print("I: Comparing two bootloaders...")
     data1 = bl1.read()
     data2 = bl2.read()
     offset1 = data1.find(VER_STRING)
@@ -23,7 +21,7 @@ def main():
     if ver1 != ver2:
       print("W: Bootloaders have different version! {} ({}) vs {} ({})".format(ver1, int_ver1, ver2, int_ver2))
     else:
-      print("W: Bootloaders have the same version: {} ({})".format(ver1, int_ver1))
+      print("I: Bootloaders have the same version: {} ({})".format(ver1, int_ver1))
   else:
     data = bl.read()
     offset = data.find(VER_STRING)
@@ -31,7 +29,7 @@ def main():
     ver = bl.read(2) # 2 bytes determine ver
     int_ver = int.from_bytes(ver, "little")
     ver = ver.hex()
-    print("BL Version: {} ({})".format(ver, int_ver))
+    print("I: BL Version: {} ({})".format(ver, int_ver))
   
 if __name__ == "__main__":
   if sys.argv[1] == "-c":
