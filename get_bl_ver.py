@@ -32,7 +32,7 @@ def main():
 
     # 4) Check amzn magic
     check_amzn(data1, sys.argv[2])
-    check_amzn(data2, sys.argv[)
+    check_amzn(data2, sys.argv[3])
 
     # 5) Find offsets
     offset1 = data1.find(STR_VER)
@@ -50,7 +50,7 @@ def main():
 
     # 7) Compare bootloaders
     if ver1 != ver2:
-      print("W: Bootloaders have different version! {} ({}) vs {} ({})".format(ver1, int_ver1, ver2, int_ver2))
+      print("W: Bootloaders have different version!\nI: {}: {} ({})\nI: {}: {} ({})".format(sys.argv[2], ver1, int_ver1, sys.argv[3], ver2, int_ver2))
       exit(1)
     else:
       print("I: Bootloaders have the same version: {} ({})".format(ver1, int_ver1))
