@@ -2,6 +2,14 @@ import sys
 
 STR_VER = b'LK_VER:'
 AMZN_MAGIC = b'AMZN'
+LK_HDR = b'lk'
+
+def check_header(hdr, bl):
+  if hdr != LK_HDR:
+      print("E: Cannot find lk header in {}! Abort...".format(bl))
+      exit(1)
+  else:
+      pass
 
 def check_amzn(data, bl):
   if not data:
@@ -21,12 +29,22 @@ def main():
     bl1 = open(sys.argv[2], "rb")
     bl2 = open(sys.argv[3], "rb")
 
-    # 2) Check bootloaders
+    # 1.1) Check if both bootloaders are the same
     if sys.argv[2] == sys.argv[3]:
         print("E: You cannot compare same bootloader! Abort...")
         exit(1)
 
-    # 3) Read bl data
+    # 2) Read bootloader hdr
+    bl1.seek(8)
+    bl2.seek(8)
+    hdr1 = bl1.read(2) #b'lk'
+    hdr2 = bl2.read(2) #b'lk'
+    check_header(hdr1, sys.argv[2])
+    check_header(hdr2, sys.argv[3])
+
+    # 3) Read bootloader data
+    bl1.seek(0)
+    bl2.seek(0)
     data1 = bl1.read()
     data2 = bl2.read()
 
@@ -59,7 +77,13 @@ def main():
   # 1) Open bootloader
   bl = open(sys.argv[1], "rb")
 
-  # 2) Read Bl data
+  # 2) Read bootloader hdr
+  bl.seek(8)
+  hdr = bl.read(2) #b'lk'
+  check_header(hdr, sys.argv[1])
+
+  # 2.1) Read bootloader data
+  bl.seek(0)
   data = bl.read()
 
   # 3) Check amzn magic
